@@ -31,7 +31,10 @@ else film.split('\t')[-1][:-1])for film in films if f'({year})' in film]
     return all_flms
 
 def length(coords1, coords2):
-    """calculate distance"""
+    """calculate distance
+    >>> length((4.555, 5.666), (4.333, 2.333))
+    370321
+    """
     if None in coords1:
         return -1
     try:
@@ -49,7 +52,10 @@ def length(coords1, coords2):
 FIL_LOC = {}
 
 def coords_place(film: tuple):
-    """coordinates of place"""
+    """coordinates of place
+    >>> coords_place('Zagreb')
+    (45.8131847, 15.9771774)
+    """
     if film in FIL_LOC:
         return FIL_LOC[film]
     try:
@@ -63,7 +69,10 @@ def coords_place(film: tuple):
     return flag
 
 def list_cords(films: list, coords: tuple):
-    """Sort by length"""
+    """Sort by length
+    >>> list_cords([('Dyp', (59.594550, 9.67086)), ('The', (31.625, -7.998))], (45.8131847, 15.9771774))
+    [('Dyp', (None, None)), ('The', (None, None))]
+    """
     films = [(film[0], coords_place(film[1])) for film in films]
     films.sort(key=lambda x: length(x[1], coords))
     return films
@@ -99,9 +108,8 @@ def creation(films: list, location: tuple, year: str):
     mapp.add_child(folium.LayerControl())
     mapp.save('Map with films.html')
 
-
 def main():
-    """ Collect all info and do everythiiing """
+    """ Collect all info and do everything """
     try:
         args = parse_creation()
         coords, year, path = (float(args.latitude), float(args.longitude)), args.year, args.path
@@ -111,4 +119,6 @@ def main():
         creation(films, coords, year)
     except Exception as err:
         print(f'{err} happaned')
-main()
+
+if __name__ == '__main__':
+    main()
